@@ -6,13 +6,11 @@
   </v-app>
 </template>
 
-<script>
+<template>
+  <h1>Очистили стартовый проект</h1>
+  </template>
 
-export default {
-  name: 'App',
-
-  data: () => ({
-    //
-  }),
-}
-</script>
+  <script>
+  export default {
+  }
+  </script>
