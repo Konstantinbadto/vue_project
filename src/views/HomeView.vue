@@ -9,6 +9,9 @@
               :key="ad.id"
               :src="ad.src"
             >
+              <div class="ad-link">
+                <v-btn color="red" dark>{{ ad.title }}</v-btn>
+              </div>
             </v-carousel-item>
           </v-carousel>
         </v-col>
@@ -22,7 +25,7 @@
           :key="ad.id"
           cols="12"
           sm="6"
-          md="3"
+          md="6"
         >
           <v-card>
             <v-img :src="ad.src" height="200"></v-img>
@@ -60,7 +63,7 @@ export default {
         },
         {
           title: "Third",
-          desc: "Thitd Desc",
+          desc: "Third Desc",
           promo: true,
           src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
           id: "3"
@@ -77,3 +80,15 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.ad-link {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%; /* Add this */
+  display: flex; /* Add this */
+  justify-content: center; /* Add this */
+  align-items: center; /* Add this */
+}
+</style>
