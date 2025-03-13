@@ -5,10 +5,10 @@
         <v-col cols="12">
           <v-carousel cycle height="400" hide-delimiters show-arrows-on-hover>
             <v-carousel-item
-              v-for="ad in ads"
-              :key="ad.id"
-              :src="ad.src"
-            >
+	v-for="ad in promoAds"
+	:key="ad.id"
+	:src="ad.src">
+
               <div class="ad-link">
                 <v-btn color="red" dark>{{ ad.title }}</v-btn>
               </div>
@@ -44,40 +44,15 @@
 
 <script>
 export default {
-  data() {
-    return {
-      ads: [
-        {
-          title: "First",
-          desc: "First Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
-          id: "1"
-        },
-        {
-          title: "Second",
-          desc: "Second Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-          id: "2"
-        },
-        {
-          title: "Third",
-          desc: "Third Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-          id: "3"
-        },
-        {
-          title: "Fourth",
-          desc: "Fourth Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-          id: "4"
-        }
-      ]
-    };
-  }
+  computed:  {
+	promoAds() {
+		return this.$store.getters.promoAds
+	},
+	ads() {
+		return this.$store.getters.ads
+	}
+}
+
 };
 </script>
 

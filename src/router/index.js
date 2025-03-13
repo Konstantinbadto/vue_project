@@ -7,53 +7,48 @@ import LoginView from '../views/Auth/LoginView.vue'
 import RegistrationView from '../views/Auth/RegistrationView.vue'
 import OrdersView from '../views/User/OrdersView.vue'
 
-
-
 const routes = [
-{
-path: '/',
-name: 'home',
-component: HomeView
-},
-{
-path:"/ad/:id",
-name:"ad",
-component: AdView
-},
-{
-path:"/list",
-name:"list",
-component: AdListView
-},
-{
-path:"/new",
-name:"newAd",
-component: NewAdView
-},
-{
-path:"/login",
-name:"login",
-component: LoginView
-},
-{
-path:"/registration",
-name: "reg",
-component: RegistrationView
-},
-{
-path: "/orders",
-name: "orders",
-component: OrdersView
-}
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView
+  },
+  {
+    path:"/ad/:id",
+    name:"ad",
+    component: AdView,
+    props: true // Add this line to pass props to AdView
+  },
+  {
+    path:"/list",
+    name:"list",
+    component: AdListView
+  },
+  {
+    path:"/new",
+    name:"newAd",
+    component: NewAdView
+  },
+  {
+    path:"/login",
+    name:"login",
+    component: LoginView
+  },
+  {
+    path:"/registration",
+    name: "reg",
+    component: RegistrationView
+  },
+  {
+    path: "/orders",
+    name: "orders",
+    component: OrdersView
+  }
 ]
 
-
-
 const router = createRouter({
-history: createWebHistory(process.env.BASE_URL),
-routes
+  history: createWebHistory(process.env.BASE_URL),
+  routes
 })
-
-
 
 export default router
