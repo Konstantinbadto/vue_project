@@ -61,6 +61,8 @@ export default {
       },
     };
   },
+
+
   computed: {
     ad() {
       const id = this.id;
