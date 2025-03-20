@@ -25,15 +25,17 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+
     <v-app-bar app dark color="primary">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
-      <v-btn to="/">
-        Home
-      </v-btn>
+        <v-btn to="/">
+          Home
+        </v-btn>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
+
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn
           v-for="link in links"
@@ -48,7 +50,24 @@
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
+
     <v-main>
+      <v-snackbar
+        v-model="error"
+        multi-line
+        :timeout="2000"
+        color="primary"
+      >
+        {{ error }}
+        <template v-slot:actions>
+          <v-btn
+            variant="text"
+            @click="closeError"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
       <router-view />
     </v-main>
   </v-app>
@@ -60,13 +79,23 @@ export default {
     return {
       drawer: false,
       links: [
-        {title:"Login", icon:"mdi-lock", url:"/login"},
-        {title:"Registration",icon:"mdi-face",url:"/registration"},
-        {title:"Orders",icon:"mdi-bookmark-multiple-outline", url:"/orders"},
-        {title:"New ad", icon:"mdi-note-plus-outline", url:"/new"},
-        {title:"My ads", icon:"mdi-view-list-outline", url:"/list"}
+        { title: "Login", icon: "mdi-lock", url: "/login" },
+        { title: "Registration", icon: "mdi-face", url: "/registration" },
+        { title: "Orders", icon: "mdi-bookmark-multiple-outline", url: "/orders" },
+        { title: "New ad", icon: "mdi-note-plus-outline", url: "/new" },
+        { title: "My ads", icon: "mdi-view-list-outline", url: "/list" }
       ]
+    };
+  },
+  computed: {
+    error() {
+      return this.$store.getters.error;
+    }
+  },
+  methods: {
+    closeError() {
+      this.$store.dispatch('clearError');
     }
   }
-}
+};
 </script>

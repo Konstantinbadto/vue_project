@@ -50,7 +50,34 @@ class User {
         } finally {
           commit('setLoading', false);
         }
+
       },
+      async loginUser({ commit }, { email, password }) {
+        commit('clearError');
+        commit('setLoading', true);
+
+        try {
+          const promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+              const isSuccess = Math.random() > 0.5; // Имитация успеха/неудачи (50/50)
+              if (isSuccess) {
+                resolve(); // Успех
+              } else {
+                reject(new Error('Ошибка регистрации')); // Неудача
+              }
+            }, 3000); // 3 секунды задержки
+          });
+
+          await promise; // Ожидаем завершения promise
+          commit('setUser', new User(1, email));
+
+        } catch (error) {
+          commit('setError', error.message);
+        } finally {
+          commit('setLoading', false);
+        }
+
+      }
     },
     getters: {
       user(state) {

@@ -55,7 +55,7 @@
   </template>
 
   <script>
-  import { mapActions } from 'vuex';
+  import { mapActions, mapState } from 'vuex';
 
   export default {
 	data() {
@@ -64,8 +64,6 @@
 		password: '',
 		confirmPassword: '',
 		valid: false,
-		loading: false,
-		errorMessage: null,
 		emailRules: [
 		  v => !!v || 'E-mail is required',
 		  v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -76,37 +74,35 @@
 		],
 		confirmPasswordRules: [
 		  v => !!v || 'Password is required',
-		  v => v === this.getPassword || 'Password should match'
+		  v => v === this.password || 'Password should match'
 		],
 	  };
 	},
 	  computed: {
-		getPassword(){
-		return this.password
-		},
-		loading() {
-		return this.$store.getters.loading
-	}
+		...mapState(['loading', 'error']),
+		errorMessage() {
+			return this.error
+		}
 },
 	methods: {
-	  ...mapActions(['registerUser']),
-
-	  onSubmit(){
+		...mapActions(['registerUser']),
+		onSubmit(){
 	if (this.$refs.form.validate()){
-	const user = {
-		email: this.email,
-		password: this.password
+		const user = {
+			email: this.email,
+			password: this.password
+		}
+		this.registerUser(user)
+		.then(() => {
+			this.$router.push("/")
+		})
+		.catch(() => {
+			// Ошибка уже сохранена в Vuex, не нужно ничего делать здесь
+		})
 	}
-	this.$store.dispatch('registerUser', user)
-	.then(() => {
-		this.$router.push("/")
-	})
-	.catch((err) => {
-		console.log(err.message)
-	})
 }
 
+
 	  },
-	},
   };
   </script>
