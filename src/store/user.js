@@ -1,31 +1,60 @@
 class User {
-    constructor(id, email, password) {
+    constructor(id, email) { // Удален password
       this.id = id;
       this.email = email;
-      this.password = password;
     }
   }
-export default {
 
-	state: {
-        user: null
-   },
-   mutations: {
-    setUser(state,payload) {
-    console.log(payload)
-    state.user = payload
-    }
+  export default {
+    state: {
+      user: null,
+      loading: false,
+      error: null,
+    },
+    mutations: {
+      setUser(state, payload) {
+        state.user = payload;
+      },
+      setLoading(state, payload) {
+        state.loading = payload;
+      },
+      setError(state, payload) {
+        state.error = payload;
+      },
+      clearError(state) {
+        state.error = null;
+      },
     },
     actions: {
-    registerUser({commit},{email, password}){
-    //Здесь запрос на сервер для регистрации
-    commit('setUser', new User(1, email, 	password))
-    }
-    },
+      async registerUser({ commit }, { email, password }) {
+        commit('clearError');
+        commit('setLoading', true);
 
-       getters: {
-        user(state) {
-                   return state.user
-       }
-   }
-   }
+        try {
+          const promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+              const isSuccess = Math.random() > 0.5; // Имитация успеха/неудачи (50/50)
+              if (isSuccess) {
+                resolve(); // Успех
+              } else {
+                reject(new Error('Ошибка регистрации')); // Неудача
+              }
+            }, 3000); // 3 секунды задержки
+          });
+
+          await promise; // Ожидаем завершения promise
+          commit('setUser', new User(1, email));
+
+        } catch (error) {
+          commit('setError', error.message);
+        } finally {
+          commit('setLoading', false);
+        }
+      },
+    },
+    getters: {
+      user(state) {
+        return state.user;
+      },
+    },
+  };

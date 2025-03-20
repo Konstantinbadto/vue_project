@@ -40,13 +40,13 @@
 			<v-card-actions>
 			  <v-spacer></v-spacer>
 			  <v-btn
-				color="primary"
-				type="submit"
-				:disabled="!valid || loading"
-				:loading="loading"
-			  >
-				Create Account
-			  </v-btn>
+			color="primary"
+			@click="onSubmit"
+			:loading="loading"
+			:disabled="!valid || loading"	>
+			Create Account
+			</v-btn>
+
 			</v-card-actions>
 		  </v-card>
 		</v-col>
@@ -83,38 +83,29 @@
 	  computed: {
 		getPassword(){
 		return this.password
-		}
-	  },
+		},
+		loading() {
+		return this.$store.getters.loading
+	}
+},
 	methods: {
 	  ...mapActions(['registerUser']),
 
-	  onSubmit() {
-		if (this.$refs.form.validate()) {
-		  this.loading = true; // Включаем индикатор загрузки
-		  this.errorMessage = null;
+	  onSubmit(){
+	if (this.$refs.form.validate()){
+	const user = {
+		email: this.email,
+		password: this.password
+	}
+	this.$store.dispatch('registerUser', user)
+	.then(() => {
+		this.$router.push("/")
+	})
+	.catch((err) => {
+		console.log(err.message)
+	})
+}
 
-		  const user = {
-			email: this.email,
-			password: this.password,
-		  };
-
-		  this.registerUser(user)
-			.then(() => {
-			  console.log('Регистрация прошла успешно!');
-			  this.$router.push('/profile');
-			  this.email = '';
-			  this.password = '';
-			  this.confirmPassword = '';
-			  this.$refs.form.reset();
-			})
-			.catch(error => {
-			  console.error('Ошибка регистрации:', error);
-			  this.errorMessage = error.message || 'Произошла ошибка при регистрации.';
-			})
-			.finally(() => {
-			  this.loading = false; // Выключаем индикатор загрузки
-			});
-		}
 	  },
 	},
   };
