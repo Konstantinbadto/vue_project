@@ -50,6 +50,7 @@
 
         <v-row>
           <v-col cols="8">
+            <v-alert v-if="error" type="error" dismissible>{{ error }}</v-alert>
             <v-spacer></v-spacer>
             <v-btn
               color="success"
@@ -73,24 +74,37 @@ export default {
       valid: false,
       title: '',
       description: '',
-      promo: false,
-      loading: false,
+      promo: false
     };
   },
+  computed: {
+    loading() {
+      return this.$store.getters['ads/loading'];
+    },
+    error() {
+      return this.$store.getters['ads/error'];
+    }
+  },
   methods: {
-    createAd(){
-	if (this.$refs.form.validate()){
-		const ad = {
-			title: this.title,
-			desc: this.description,
-			promo: this.promo,
-			src: "https://cdn.vuetifyjs.com/images/cards/cooking.png"
-		}
-	this.$store.dispatch("createAd", ad)
-}
-}
-
+  createAd() {
+    if (this.$refs.form.validate()) {
+      const ad = {
+        title: this.title,
+        desc: this.description,
+        promo: this.promo,
+        src: "https://cdn.vuetifyjs.com/images/cards/cooking.png"
+      };
+      console.log('NewAdView: Ad перед отправкой в action:', ad); // Добавляем лог
+      this.$store.dispatch("createAd", ad)
+        .then(() => {
+          this.$router.push("/list");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
+}
 
 };
 </script>

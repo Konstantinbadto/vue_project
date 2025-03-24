@@ -64,15 +64,15 @@ class User {
             setTimeout(() => {
               const isSuccess = Math.random() > 0.5; // Имитация успеха/неудачи (50/50)
               if (isSuccess) {
-                resolve(); // Успех
+                resolve(Math.floor(Math.random() * 100)); // Успех, возвращаем рандомный id
               } else {
-                reject(new Error('Ошибка регистрации')); // Неудача
+                reject(new Error('Ошибка логина')); // Неудача
               }
             }, 3000); // 3 секунды задержки
           });
 
-          await promise; // Ожидаем завершения promise
-          commit('setUser', new User(1, email));
+          const userId = await promise; // Ожидаем завершения promise и получаем id
+          commit('setUser', new User(userId, email));
 
         } catch (error) {
           commit('setError', error.message);
@@ -83,12 +83,11 @@ class User {
       }
     },
     getters: {
-      isUserLoggedIn (state) {
-        return state.user !== null
+      isUserLoggedIn(state) {
+        return state.user !== null;
       },
-
       user(state) {
-        return state.user;
+        return state.user ? state.user.id : null;
       },
     },
   };
