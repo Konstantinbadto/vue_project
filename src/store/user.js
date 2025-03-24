@@ -26,6 +26,9 @@ class User {
       },
     },
     actions: {
+      logoutUser({commit}) {
+        commit('setUser', null)
+        },
       async registerUser({ commit }, { email, password }) {
         commit('clearError');
         commit('setLoading', true);
@@ -80,6 +83,10 @@ class User {
       }
     },
     getters: {
+      isUserLoggedIn (state) {
+        return state.user !== null
+      },
+
       user(state) {
         return state.user;
       },

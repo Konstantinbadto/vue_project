@@ -48,6 +48,13 @@
           ></v-icon>
           {{ link.title }}
         </v-btn>
+        <v-btn @click="onLogout" v-if="isUserLoggedIn">
+          <v-icon
+            start
+            icon="mdi-exit-to-app"
+          ></v-icon>
+          Logout
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -77,17 +84,26 @@
 export default {
   data() {
     return {
-      drawer: false,
-      links: [
-        { title: "Login", icon: "mdi-lock", url: "/login" },
-        { title: "Registration", icon: "mdi-face", url: "/registration" },
-        { title: "Orders", icon: "mdi-bookmark-multiple-outline", url: "/orders" },
-        { title: "New ad", icon: "mdi-note-plus-outline", url: "/new" },
-        { title: "My ads", icon: "mdi-view-list-outline", url: "/list" }
-      ]
     };
   },
   computed: {
+    links(){
+      if (this.isUserLoggedIn) {
+        return [
+          {title:"Orders",icon:"mdi-bookmark-multiple-outline", url:"/orders"},
+          {title:"New ad", icon:"mdi-note-plus-outline", url:"/new"},
+          {title:"My ads", icon:"mdi-view-list-outline", url:"/list"}
+        ]
+      } else {
+        return [
+          {title:"Login", icon:"mdi-lock", url:"/login"},
+          {title:"Registration",icon:"mdi-face",url:"/registration"},
+        ]
+      }
+    },
+    isUserLoggedIn () {
+      return this.$store.getters.isUserLoggedIn
+    },
     error() {
       return this.$store.getters.error;
     }
@@ -95,7 +111,11 @@ export default {
   methods: {
     closeError() {
       this.$store.dispatch('clearError');
-    }
-  }
+    },
+    onLogout () {
+this.$store.dispatch('logoutUser')
+this.$router.push("/")
+}
+},
 };
 </script>
