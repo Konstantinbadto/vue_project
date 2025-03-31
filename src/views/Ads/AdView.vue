@@ -2,48 +2,32 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-card class="mt-5">
-          <v-img
-            height="400px"
-            :src="ad ? ad.src : ''"
-            cover
-          ></v-img>
+        <v-card class="mt-5" v-if="ad">
+          <v-img height="400px" :src="ad.src" cover></v-img>
           <v-card-text>
-            <h1 class="text--primary mb-3">{{ ad ? ad.title : '' }}</h1>
-            <p>{{ ad ? ad.desc : '' }}</p>
+            <h1 class="text--primary mb-3">{{ ad.title }}</h1>
+            <p>{{ ad.desc }}</p>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn class="warning" color="orange" @click="openEditDialog">
-              Edit
-            </v-btn>
+            <v-btn color="primary" @click="modal = true">Edit</v-btn>
             <v-btn class="success" color="green">Buy</v-btn>
           </v-card-actions>
+          <edit-ad-modal :ad="ad" :modal="modal" @update:modal="modal = $event" @updateAd="onSaveAd"></edit-ad-modal>
         </v-card>
+        <p v-else>Загрузка...</p>
       </v-col>
     </v-row>
-
-    <!-- Edit Dialog -->
-    <v-dialog v-model="isEditing" max-width="500px">
-      <v-card>
-        <v-card-title class="text-h5">Edit Ad</v-card-title>
-        <v-card-text>
-          <v-text-field label="Title" v-model="editedAd.title"></v-text-field>
-          <v-textarea label="Description" v-model="editedAd.desc"></v-textarea>
-          <!-- Добавьте поле для редактирования изображения, если нужно -->
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey" text @click="closeEditDialog">Cancel</v-btn>
-          <v-btn color="primary" @click="saveAd">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
+import EditAdModal from './EditAdModal.vue';
+
 export default {
+  components: {
+    EditAdModal,
+  },
   props: {
     id: {
       type: String,
@@ -52,37 +36,32 @@ export default {
   },
   data() {
     return {
-      isEditing: false,
-      editedAd: {
-        title: '',
-        desc: '',
-        src: '',
-        id: ''
-      },
+      ad: null,
+      modal: false, // Добавляем modal: false
     };
   },
-
-
-  computed: {
-    ad() {
-      const id = this.id;
-      const ad = this.$store.getters.adById(id);
-      if (ad) {
-        this.editedAd = { ...ad }; // Initialize editedAd with ad data
-      }
-      return ad;
-    },
+  mounted() {
+    console.log('AdView: Компонент загружен!');
+    this.loadAd();
   },
   methods: {
     openEditDialog() {
-      this.isEditing = true;
-    },
-    closeEditDialog() {
-      this.isEditing = false;
-    },
-    saveAd() {
-      this.$store.commit('updateAd', this.editedAd);
-      this.isEditing = false;
+    console.log('openEditDialog вызван!');
+    this.isEditing = true;
+  },
+  onSaveAd(updatedAd) {
+    console.log('AdView: Получены обновленные данные:', updatedAd);
+    this.$store.dispatch('updateAd', updatedAd);
+    this.modal = false;
+  },
+    loadAd() {
+      const ad = this.$store.getters.adById(this.id);
+      if (ad) {
+        this.ad = ad;
+        console.log('AdView: Данные ad:', this.ad); // Добавили лог
+      } else {
+        console.error('AdView: Объявление не найдено');
+      }
     },
   },
 };

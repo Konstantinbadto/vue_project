@@ -32,8 +32,8 @@
             <v-card-title>{{ ad.title }}</v-card-title>
             <v-card-subtitle>{{ ad.desc }}</v-card-subtitle>
             <v-card-actions>
-              <v-btn text>Open</v-btn>
-              <v-btn color="primary">Buy</v-btn>
+              <button @click="goToAd(ad.id)">Open</button>
+  <v-btn color="primary">Buy</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -44,15 +44,23 @@
 
 <script>
 export default {
-  computed:  {
-	promoAds() {
-		return this.$store.getters.promoAds
-	},
-	ads() {
-		return this.$store.getters.ads
-	}
-}
-
+  computed: {
+    promoAds() {
+      return this.$store.getters.promoAds;
+    },
+    ads() {
+      return this.$store.getters.ads;
+    },
+  },
+  mounted() {
+    console.log('HomeView: Компонент загружен!');
+  },
+  methods: {
+    goToAd(id) {
+      console.log('Кнопка Open нажата! ID:', id); // Проверяем id
+      this.$router.push({ name: 'ad', params: { id: id } });
+    },
+  },
 };
 </script>
 

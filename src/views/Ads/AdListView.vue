@@ -21,9 +21,7 @@
               </p>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" variant="text" :to="{ name: 'ad', params: { id: ad.id } }">
-                  Open
-                </v-btn>
+                <<button @click="goToAd(ad.id)">Open</button>
               </v-card-actions>
             </v-col>
           </v-row>
@@ -37,8 +35,18 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  methods: {
+  goToAd(id) {
+    console.log('Кнопка Open нажата! ID:', id); // Проверяем id
+    this.$router.push({ name: 'ad', params: { id: id } });
+  }
+},
   computed: {
     ...mapGetters(['myAds']),
+  },
+  mounted() {
+    console.log('AdListView: Компонент загружен!');
+    console.log('Перед кнопкой Open'); // Добавили лог
   },
 };
 </script>
