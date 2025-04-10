@@ -33,7 +33,7 @@
             <v-card-subtitle>{{ ad.desc }}</v-card-subtitle>
             <v-card-actions>
               <button @click="goToAd(ad.id)">Open</button>
-  <v-btn color="primary">Buy</v-btn>
+              <buy-ad-modal :ad="ad"></buy-ad-modal>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -43,7 +43,11 @@
 </template>
 
 <script>
+import BuyAdModal from './views/Shared/BuyAdModal.vue';
 export default {
+  components: {
+    BuyAdModal  // Регистрируем компонент
+  },
   computed: {
     promoAds() {
       return this.$store.getters.promoAds;

@@ -11,7 +11,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="primary" @click="modal = true">Edit</v-btn>
-            <v-btn class="success" color="green">Buy</v-btn>
+            <buy-ad-modal :ad="ad"></buy-ad-modal>
           </v-card-actions>
           <edit-ad-modal :ad="ad" :modal="modal" @update:modal="modal = $event" @updateAd="onSaveAd"></edit-ad-modal>
         </v-card>
