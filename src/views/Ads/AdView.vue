@@ -23,10 +23,13 @@
 
 <script>
 import EditAdModal from './EditAdModal.vue';
+import BuyAdModal from '../Shared/BuyAdModal.vue';
 
 export default {
   components: {
     EditAdModal,
+    BuyAdModal,
+
   },
   props: {
     id: {

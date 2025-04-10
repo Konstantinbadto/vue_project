@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import BuyAdModal from './views/Shared/BuyAdModal.vue';
+import BuyAdModal from './Shared/BuyAdModal.vue';
 export default {
   components: {
     BuyAdModal  // Регистрируем компонент

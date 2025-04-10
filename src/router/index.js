@@ -1,12 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import AdListView from '../views/Ads/AdListView.vue'
-import AdView from '../views/Ads/AdView.vue'
-import NewAdView from '../views/Ads/NewAdView.vue'
-import LoginView from '../views/Auth/LoginView.vue'
-import RegistrationView from '../views/Auth/RegistrationView.vue'
-import OrdersView from '../views/User/OrdersView.vue'
-import AuthGuard from './auth-guard' // Импортируем AuthGuard
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import AdListView from '../views/Ads/AdListView.vue';
+import AdView from '../views/Ads/AdView.vue';
+import NewAdView from '../views/Ads/NewAdView.vue';
+import LoginView from '../views/Auth/LoginView.vue';
+import RegistrationView from '../views/Auth/RegistrationView.vue';
+import OrdersView from '../views/User/OrdersView.vue';
+import OrderDetailView from '../OrderDetailView.vue'; // Импортируем OrderDetailView
+import AuthGuard from './auth-guard'; // Импортируем AuthGuard
 
 const routes = [
   {
@@ -15,30 +16,30 @@ const routes = [
     component: HomeView
   },
   {
-    path:"/ad/:id",
-    name:"ad",
+    path: "/ad/:id",
+    name: "ad",
     component: AdView,
     props: true // Add this line to pass props to AdView
   },
   {
-    path:"/list",
-    name:"list",
+    path: "/list",
+    name: "list",
     component: AdListView,
     beforeEnter: AuthGuard // Добавляем AuthGuard к маршруту "/list"
   },
   {
-    path:"/new",
-    name:"newAd",
+    path: "/new",
+    name: "newAd",
     component: NewAdView,
     beforeEnter: AuthGuard // Добавляем AuthGuard к маршруту "/new"
   },
   {
-    path:"/login",
-    name:"login",
+    path: "/login",
+    name: "login",
     component: LoginView
   },
   {
-    path:"/registration",
+    path: "/registration",
     name: "reg",
     component: RegistrationView
   },
@@ -47,12 +48,19 @@ const routes = [
     name: "orders",
     component: OrdersView,
     beforeEnter: AuthGuard // Добавляем AuthGuard к маршруту "/orders"
+  },
+  {
+    path: '/orders/:id', // Добавляем новый маршрут с параметром id
+    name: 'order-detail',
+    component: OrderDetailView,
+    props: true, // Позволяет передавать параметры маршрута в качестве props
+    beforeEnter: AuthGuard // Защищаем маршрут AuthGuard
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
 
-export default router
+export default router;
